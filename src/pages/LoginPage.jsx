@@ -40,6 +40,13 @@ const LoginPage = () => {
       <div className="login-card">
         {/* Left Side: Comforting Quote & Branding */}
         <div className="login-info-panel">
+          <div className="abstract-design">
+            <div className="shape circle-1"></div>
+            <div className="shape circle-2"></div>
+            <div className="shape dots-1"></div>
+            <div className="shape dots-2"></div>
+          </div>
+          
           <div className="login-brand">
             <span className="brand-logo">🔍</span>
             <span className="brand-text">CampusTrace</span>
