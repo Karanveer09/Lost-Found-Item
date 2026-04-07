@@ -12,28 +12,43 @@ const LoginPage = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
 
-    if (!rollNumber.trim() || !password.trim()) {
-      setError('Please enter both roll number and password.');
-      return;
-    }
+  if (!rollNumber.trim() || !password.trim()) {
+    setError('Please enter both roll number and password.');
+    return;
+  }
 
-    setLoading(true);
-    // Simulate network delay
-    await new Promise((r) => setTimeout(r, 800));
+  const roll = Number(rollNumber);
 
-    const result = login(rollNumber.trim(), password);
-    setLoading(false);
+  // ✅ Roll number validation
+  if (roll < 2331000 || roll > 2331299) {
+    setError('Enter a Valid Roll No');
+    return;
+  }
 
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      setError(result.error);
-    }
-  };
+  // ✅ Password validation
+  if (password !== 'college123') {
+    setError('Invalid password.');
+    return;
+  }
+
+  setLoading(true);
+
+  // simulate delay (keep your existing logic)
+  await new Promise((r) => setTimeout(r, 800));
+
+  const result = login(rollNumber.trim(), password);
+  setLoading(false);
+
+  if (result.success) {
+    navigate('/dashboard');
+  } else {
+    setError(result.error);
+  }
+};
 
   return (
     <div className="login-wrapper">

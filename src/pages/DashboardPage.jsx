@@ -5,12 +5,20 @@ import { formatDate, getCategoryIcon } from '../utils/helpers';
 import StatsCard from '../components/StatsCard';
 import ItemCard from '../components/ItemCard';
 import './DashboardPage.css';
+import { useEffect, useState } from "react";
 
 const DashboardPage = () => {
   const { profile, user } = useAuth();
   const navigate = useNavigate();
-  const items = getItems();
+  const [items, setItems] = useState([]);
 
+useEffect(() => {
+  fetch("http://localhost:5000/api/items")
+    .then((res) => res.json())
+    .then((data) => setItems(data))
+    .catch((err) => console.error(err));
+}, []);
+ console.log(items);
   const totalLost = items.filter((i) => i.type === 'lost').length;
   const totalFound = items.filter((i) => i.type === 'found').length;
   const myReports = items.filter((i) => i.reportedBy === user?.rollNumber).length;

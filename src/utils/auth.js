@@ -2,14 +2,15 @@ import { COLLEGE_STUDENTS } from '../data/mockDatabase';
 import { getUser, setUser, removeUser, getProfile, storage } from './storage';
 
 export const authenticate = (rollNumber, password) => {
-  const student = COLLEGE_STUDENTS.find((s) => s.rollNumber === rollNumber);
-  if (!student) {
+  const roll = Number(rollNumber);
+
+  if (roll < 2331000 || roll > 2331299) {
     return { success: false, error: 'Roll number not found in college database.' };
   }
 
-  // Check if user has changed password before
   const storedPassword = storage.get(`password_${rollNumber}`);
-  const validPassword = storedPassword || student.password;
+  const validPassword = storedPassword || 'college123';
+
 
   if (password !== validPassword) {
     return { success: false, error: 'Incorrect password.' };
@@ -17,6 +18,7 @@ export const authenticate = (rollNumber, password) => {
 
   const user = { rollNumber, loggedInAt: new Date().toISOString() };
   setUser(user);
+
   return { success: true, user };
 };
 
