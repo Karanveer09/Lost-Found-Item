@@ -27,16 +27,20 @@
 .footer-logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
   margin-bottom: var(--space-md);
+  height: 80px; /* Increased from 64px */
+  width: 80px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid var(--border-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
-.footer-logo .logo-name {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: -0.02em;
+.footer-logo .logo-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* Crop effect */
+  transform: scale(1.4); /* Zoom effect */
 }
 
 .footer-tagline {

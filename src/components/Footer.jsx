@@ -1,3 +1,4 @@
+import logoImg from '../assets/Logo.jpg';
 import './Footer.css';
 
 const Footer = () => {
@@ -7,8 +8,7 @@ const Footer = () => {
         <div className="footer-main">
           <div className="footer-brand">
             <div className="footer-logo">
-              <span className="logo-icon">✨</span>
-              <span className="logo-name">CampusTrace</span>
+              <img src={logoImg} alt="logo" className="logo-img" />
             </div>
             <p className="footer-tagline">
               Connecting the campus, one found item at a time. The official lost and found portal for modern students.

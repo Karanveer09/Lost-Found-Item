@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/Logo.jpg';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -47,9 +48,8 @@ const LoginPage = () => {
             <div className="shape dots-2"></div>
           </div>
           
-          <div className="login-brand">
-            <span className="brand-logo">🔍</span>
-            <span className="brand-text">CampusTrace</span>
+          <div className="login-brand" onClick={() => navigate('/')}>
+            <img src={logoImg} alt="logo" className="login-logo-img" />
           </div>
           
           <div className="quote-container">

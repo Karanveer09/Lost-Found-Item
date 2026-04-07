@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import logoImg from '../assets/Logo.jpg';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -32,8 +33,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="navbar-left">
           <div className="navbar-logo" onClick={() => navigate('/')}>
-            <span className="logo-icon">✨</span>
-            <span className="logo-name">CampusTrace</span>
+            <img src={logoImg} alt="logo" className="logo-img" />
           </div>
         </div>
 

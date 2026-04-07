@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getItems } from '../utils/storage';
 import ItemCard from '../components/ItemCard';
@@ -7,15 +7,57 @@ import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const items = getItems().slice(0, 3); // Get 3 most recent items
+  const items = getItems().slice(0, 3); 
   const revealRefs = useRef([]);
   revealRefs.current = [];
+  
+  const [activeFaq, setActiveFaq] = useState(null);
 
   const addToRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
     }
   };
+
+  const faqs = [
+    {
+      question: "How do I verify if an item belongs to me?",
+      answer: "We use a secure in-app chat system. When you find an item that looks like yours, you can message the finder. They will ask specific questions (like a wallpaper description or a unique mark) that only the owner would know before arranging a handover."
+    },
+    {
+      question: "Is my roll number safe on this platform?",
+      answer: "Yes, absolutely. Your roll number is only used for authentication and is not publicly displayed. Only verified students of the campus can access the platform."
+    },
+    {
+      question: "What should I do if I find a high-value item?",
+      answer: "For high-value items like laptops or expensive jewelry, we recommend reporting it here first, then handing it over to the official Campus Security office. You can update your post to mention that the item is now with security."
+    },
+    {
+      question: "Can I report items found in the hostel?",
+      answer: "Yes! We have a dedicated 'Hostel Block' section specifically for items found in residential areas, corridors, and mess halls."
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Arjun Mehta",
+      role: "3rd Year, CSE",
+      content: "I lost my lab records just two days before the internal exam. I was devastated until someone posted them here within an hour. Saved my semester!",
+      avatar: "👨‍💻"
+    },
+    {
+      name: "Sneha Kapoor",
+      role: "2nd Year, Design",
+      content: "Found my AirPods in the canteen through CampusTrace. The chat verification gave me peace of mind that I was meeting the right person.",
+      avatar: "🎨"
+    },
+    {
+      name: "Rohan Das",
+      role: "Hostel Block B",
+      content: "Returned a wallet I found in the corridor. It felt great to help a fellow hosteller, and the process was so quick and professional.",
+      avatar: "🏫"
+    }
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -130,6 +172,26 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Success Stories */}
+      <section className="testimonials-section" ref={addToRefs}>
+        <div className="section-header">
+          <h2 className="section-title">Verified Recoveries</h2>
+          <p className="section-subtitle">Real stories from our campus community.</p>
+        </div>
+        <div className="testimonials-grid">
+          {testimonials.map((t, idx) => (
+            <div className="testimonial-card" key={idx}>
+              <div className="testimonial-avatar">{t.avatar}</div>
+              <p className="testimonial-content">"{t.content}"</p>
+              <div className="testimonial-author">
+                <strong>{t.name}</strong>
+                <span>{t.role}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* About Us / Vision */}
       <section id="about" className="about-section" ref={addToRefs}>
         <div className="about-grid">
@@ -169,6 +231,31 @@ const LandingPage = () => {
                 </ul>
              </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="faq-section" ref={addToRefs}>
+        <div className="section-header">
+          <h2 className="section-title">Common Questions</h2>
+          <p className="section-subtitle">Everything you need to know about the platform.</p>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq, idx) => (
+            <div 
+              key={idx} 
+              className={`faq-item ${activeFaq === idx ? 'active' : ''}`}
+              onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+            >
+              <div className="faq-question">
+                <h3>{faq.question}</h3>
+                <span className="faq-icon">{activeFaq === idx ? '−' : '+'}</span>
+              </div>
+              <div className="faq-answer">
+                <p>{faq.answer}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

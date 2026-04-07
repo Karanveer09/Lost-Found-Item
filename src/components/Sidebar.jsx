@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getChats } from '../utils/storage';
+import logoImg from '../assets/Logo.jpg';
 import './Sidebar.css';
 
 const navItems = [
@@ -23,11 +24,7 @@ const Sidebar = () => {
       <aside className="sidebar">
         <div className="sidebar-header">
           <div className="sidebar-logo" onClick={() => navigate('/')}>
-            <span className="logo-icon">✨</span>
-            <div className="logo-text">
-              <span className="logo-name">CampusTrace</span>
-              <span className="logo-tagline">Lost & Found Portal</span>
-            </div>
+            <img src={logoImg} alt="logo" className="logo-img" />
           </div>
         </div>
 
