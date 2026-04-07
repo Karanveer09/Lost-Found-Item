@@ -4,7 +4,8 @@ import { getChats } from '../utils/storage';
 import './Sidebar.css';
 
 const navItems = [
-  { path: '/', label: 'Dashboard', icon: '🏠' },
+  { path: '/', label: 'Home', icon: '✨' },
+  { path: '/dashboard', label: 'History', icon: '🏠' },
   { path: '/campus', label: 'Campus', icon: '🏫' },
   { path: '/hostel', label: 'Hostel', icon: '🏢' },
   { path: '/chat', label: 'Messages', icon: '💬' },

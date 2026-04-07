@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import LoginPage from './pages/LoginPage';
+import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import CampusPage from './pages/CampusPage';
 import HostelPage from './pages/HostelPage';
@@ -50,6 +51,13 @@ const AppLayout = ({ children }) => (
   </div>
 );
 
+const LandingLayout = ({ children }) => (
+  <div className="landing-layout">
+    <Navbar />
+    <div className="landing-content">{children}</div>
+  </div>
+);
+
 function App() {
   return (
     <AuthProvider>
@@ -66,7 +74,8 @@ function App() {
           <Route path="/login" element={<AuthRoute><LoginPage /></AuthRoute>} />
           <Route path="/setup-profile" element={<SetupRoute><ProfileSetup /></SetupRoute>} />
           
-          <Route path="/" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><LandingLayout><LandingPage /></LandingLayout></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
           <Route path="/campus" element={<ProtectedRoute><AppLayout><CampusPage /></AppLayout></ProtectedRoute>} />
           <Route path="/hostel" element={<ProtectedRoute><AppLayout><HostelPage /></AppLayout></ProtectedRoute>} />
           <Route path="/item/:id" element={<ProtectedRoute><AppLayout><ItemDetailPage /></AppLayout></ProtectedRoute>} />

@@ -11,7 +11,8 @@ const Navbar = () => {
 
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/') return 'Overview';
+    if (path === '/') return 'Home';
+    if (path === '/dashboard') return 'Activity Overview';
     if (path === '/campus') return 'Campus Exploration';
     if (path === '/hostel') return 'Hostel Block';
     if (path === '/chat') return 'Messages';
@@ -28,52 +29,85 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-left">
-        <div className="breadcrumb-pill">
-          <span className="breadcrumb-dot"></span>
-          <span className="navbar-page-title">{getPageTitle()}</span>
+      <div className="navbar-container">
+        <div className="navbar-left">
+          <div className="navbar-logo" onClick={() => navigate('/')}>
+            <span className="logo-icon">✨</span>
+            <span className="logo-name">CampusTrace</span>
+          </div>
         </div>
-      </div>
-      
-      <div className="navbar-right">
-        <div className="navbar-date">
-          {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+
+        <div className="navbar-center">
+          <div className="nav-links-horizontal">
+            <button 
+              className={`nav-link-btn ${location.pathname === '/' ? 'active' : ''}`} 
+              onClick={() => navigate('/')}
+            >
+              Home
+            </button>
+            <button 
+              className={`nav-link-btn ${location.pathname === '/campus' ? 'active' : ''}`} 
+              onClick={() => navigate('/campus')}
+            >
+              Campus Hub
+            </button>
+            <button 
+              className={`nav-link-btn ${location.pathname === '/hostel' ? 'active' : ''}`} 
+              onClick={() => navigate('/hostel')}
+            >
+              Hostel Block
+            </button>
+            <button 
+              className={`nav-link-btn ${location.pathname === '/dashboard' ? 'active' : ''}`} 
+              onClick={() => navigate('/dashboard')}
+            >
+              History
+            </button>
+            <button 
+              className={`nav-link-btn ${location.pathname === '/help' ? 'active' : ''}`} 
+              onClick={() => navigate('/help')}
+            >
+              Guidelines
+            </button>
+          </div>
         </div>
         
-        <div className="navbar-actions">
-          <button className="nav-btn-icon" onClick={() => navigate('/help')} title="Help">
-            <span>🛡️</span>
-          </button>
-          
-          <div className="profile-wrapper" onClick={() => setShowUserMenu(!showUserMenu)}>
-            <div className="navbar-avatar">
-              {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
-            </div>
-            {showUserMenu && (
-              <>
-                <div className="menu-backdrop" onClick={() => setShowUserMenu(false)} />
-                <div className="user-dropdown animate-scale-in">
-                  <div className="dropdown-header">
-                    <p className="dropdown-name">{profile?.name || 'Student'}</p>
-                    <p className="dropdown-email">{user?.rollNumber}</p>
-                  </div>
-                  <div className="dropdown-divider" />
-                  <button className="dropdown-item" onClick={() => navigate('/profile')}>
-                    <span className="item-icon">👤</span> 
-                    <span>Account Profile</span>
-                  </button>
-                  <button className="dropdown-item" onClick={() => navigate('/chat')}>
-                    <span className="item-icon">💬</span> 
-                    <span>My Messages</span>
-                  </button>
-                  <div className="dropdown-divider" />
-                  <button className="dropdown-item logout" onClick={handleLogout}>
-                    <span className="item-icon">🚪</span> 
-                    <span>Sign Out</span>
-                  </button>
+        <div className="navbar-right">
+          <div className="navbar-actions">
+            <div className="profile-wrapper" onClick={() => setShowUserMenu(!showUserMenu)}>
+              <div className="navbar-avatar-wrapper">
+                <div className="navbar-avatar">
+                  {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
                 </div>
-              </>
-            )}
+                <span className="navbar-user-name">{profile?.name?.split(' ')[0] || 'Me'}</span>
+              </div>
+              
+              {showUserMenu && (
+                <>
+                  <div className="menu-backdrop" onClick={() => setShowUserMenu(false)} />
+                  <div className="user-dropdown animate-scale-in">
+                    <div className="dropdown-header">
+                      <p className="dropdown-name">{profile?.name || 'Student'}</p>
+                      <p className="dropdown-email">{user?.rollNumber}</p>
+                    </div>
+                    <div className="dropdown-divider" />
+                    <button className="dropdown-item" onClick={() => navigate('/profile')}>
+                      <span className="item-icon">👤</span> 
+                      <span>Account Profile</span>
+                    </button>
+                    <button className="dropdown-item" onClick={() => navigate('/chat')}>
+                      <span className="item-icon">💬</span> 
+                      <span>My Messages</span>
+                    </button>
+                    <div className="dropdown-divider" />
+                    <button className="dropdown-item logout" onClick={handleLogout}>
+                      <span className="item-icon">🚪</span> 
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
