@@ -432,19 +432,7 @@ input, textarea, select {
 .stagger-children > *:nth-child(10) { animation-delay: 0.5s; }
 
 /* ---- Page Layout ---- */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
-  margin-left: var(--sidebar-width);
-  padding: var(--space-2xl) var(--space-2xl) 100px;
-  padding-top: calc(var(--navbar-height) + var(--space-2xl));
-  min-height: 100vh;
-  transition: margin-left var(--transition-slow);
-}
+/* Consolidated layout moved to bottom */
 
 .items-grid {
   display: grid;
@@ -471,26 +459,7 @@ input, textarea, select {
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 1024px) {
-  .main-content {
-    margin-left: 0;
-    padding: var(--space-lg);
-    padding-top: calc(var(--navbar-height) + var(--space-lg));
-    padding-bottom: 80px;
-  }
-}
-
-@media (max-width: 640px) {
-  .main-content {
-    padding: var(--space-md);
-    padding-top: calc(var(--navbar-height) + var(--space-md));
-    padding-bottom: 80px;
-  }
-
-  .page-title {
-    font-size: 1.4rem;
-  }
-}
+/* Consolidated responsive moved to bottom */
 
 /* ---- Empty State ---- */
 .empty-state {

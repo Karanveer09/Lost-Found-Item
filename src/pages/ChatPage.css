@@ -1,15 +1,15 @@
 .chat-page {
   display: flex;
-  height: calc(100vh - var(--navbar-height) - var(--space-xl) * 2);
+  height: calc(100vh - var(--space-xl) * 2 - 20px); /* Tighter top spacing */
   gap: var(--space-lg);
   animation: fadeIn 0.3s ease;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .chat-page {
     flex-direction: column;
     height: auto;
-    min-height: calc(100vh - var(--navbar-height) - var(--space-xl) * 2);
+    min-height: calc(100vh - 64px - var(--space-xl) * 2); /* 64px for mobile header */
   }
 }
 
