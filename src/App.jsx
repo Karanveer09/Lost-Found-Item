@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
@@ -13,6 +14,7 @@ import ProfilePage from './pages/ProfilePage';
 import HelpSupportPage from './pages/HelpSupportPage';
 import ProfileSetup from './pages/ProfileSetup';
 import ItemDetailPage from './pages/ItemDetailPage';
+import logoImg from './assets/Logo.jpg';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -41,15 +43,45 @@ const SetupRoute = ({ children }) => {
   return children;
 };
 
-const AppLayout = ({ children }) => (
-  <div className="app-container">
-    <Sidebar />
-    <div className="main-content">
-      <Navbar />
-      <div className="page-content">{children}</div>
+const AppLayout = ({ children }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
+  return (
+    <div className="app-container">
+      {/* Mobile-only header for internal pages */}
+      <div className="mobile-header">
+        <button 
+          className="menu-toggle" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle Menu"
+        >
+          <span className="hamburger-bar"></span>
+          <span className="hamburger-bar"></span>
+          <span className="hamburger-bar"></span>
+        </button>
+        <div className="mobile-brand-logo">
+          <img src={logoImg} alt="logo" className="mobile-logo-img" />
+        </div>
+      </div>
+
+      {isMobileMenuOpen && (
+        <div className="sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
+
+      <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+      
+      <div className="main-content">
+        <div className="page-content">{children}</div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const LandingLayout = ({ children }) => (
   <div className="landing-layout">

@@ -169,5 +169,11 @@
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
   }
 }

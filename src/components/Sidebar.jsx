@@ -13,7 +13,7 @@ const navItems = [
   { path: '/help', label: 'Guidelines', icon: '🛡️' },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const { profile, logout } = useAuth();
   const chats = getChats();
@@ -21,7 +21,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <aside className="sidebar">
+      <aside className={`sidebar ${isOpen ? 'show' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo" onClick={() => navigate('/')}>
             <img src={logoImg} alt="logo" className="logo-img" />
@@ -37,6 +37,7 @@ const Sidebar = () => {
                   key={item.path}
                   to={item.path}
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+                  onClick={onClose}
                 >
                   <span className="nav-icon">{item.icon}</span>
                   <span className="nav-label">{item.label}</span>
