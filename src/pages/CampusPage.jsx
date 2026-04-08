@@ -73,24 +73,30 @@ const CampusPage = () => {
             <span className="search-icon">🔍</span>
             <input
               type="text"
-              className="input-field search-input"
-              placeholder="Search items..."
+              className="search-input"
+              placeholder="Search items by title, location or keywords..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <button className="clear-search" onClick={() => setSearchQuery('')}>✕</button>
+            )}
           </div>
-          <select
-            className="input-field category-select"
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            {CATEGORIES.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.icon} {cat.label}
-              </option>
-            ))}
-          </select>
+          <div className="select-wrapper">
+            <span className="select-icon">📁</span>
+            <select
+              className="category-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.icon} {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

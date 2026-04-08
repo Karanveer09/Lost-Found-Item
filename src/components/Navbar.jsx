@@ -10,6 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +24,13 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    if (showUserMenu) setShowUserMenu(false);
+  };
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const getPageTitle = () => {
     const path = location.pathname;
@@ -88,8 +96,8 @@ const Navbar = () => {
         
         <div className="navbar-right">
           <div className="navbar-actions">
-            <div className="profile-wrapper" onClick={() => setShowUserMenu(!showUserMenu)}>
-              <div className="navbar-avatar-wrapper">
+            <div className="profile-wrapper">
+              <div className="navbar-avatar-wrapper" onClick={() => setShowUserMenu(!showUserMenu)}>
                 <div className="navbar-avatar">
                   {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
                 </div>
@@ -105,11 +113,11 @@ const Navbar = () => {
                       <p className="dropdown-email">{user?.rollNumber}</p>
                     </div>
                     <div className="dropdown-divider" />
-                    <button className="dropdown-item" onClick={() => navigate('/profile')}>
+                    <button className="dropdown-item" onClick={() => { navigate('/profile'); setShowUserMenu(false); }}>
                       <span className="item-icon">👤</span> 
                       <span>Account Profile</span>
                     </button>
-                    <button className="dropdown-item" onClick={() => navigate('/chat')}>
+                    <button className="dropdown-item" onClick={() => { navigate('/chat'); setShowUserMenu(false); }}>
                       <span className="item-icon">💬</span> 
                       <span>My Messages</span>
                     </button>
@@ -122,6 +130,29 @@ const Navbar = () => {
                 </>
               )}
             </div>
+
+            {/* Mobile Toggle Button */}
+            <button className={`mobile-toggle ${isMobileMenuOpen ? 'active' : ''}`} onClick={toggleMobileMenu}>
+              <span className="bar shadow-sm"></span>
+              <span className="bar shadow-sm"></span>
+              <span className="bar shadow-sm"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-overlay-content">
+          <div className="mobile-nav-links">
+            <button className="mobile-nav-item" onClick={() => { navigate('/'); closeMobileMenu(); }}>Home</button>
+            <button className="mobile-nav-item" onClick={() => { navigate('/campus'); closeMobileMenu(); }}>Campus Hub</button>
+            <button className="mobile-nav-item" onClick={() => { navigate('/hostel'); closeMobileMenu(); }}>Hostel Block</button>
+            <button className="mobile-nav-item" onClick={() => { navigate('/dashboard'); closeMobileMenu(); }}>History</button>
+            <button className="mobile-nav-item" onClick={() => { navigate('/help'); closeMobileMenu(); }}>Guidelines</button>
+          </div>
+          <div className="mobile-overlay-footer">
+             <p className="footer-tag">CampusTrace v1.0</p>
           </div>
         </div>
       </div>

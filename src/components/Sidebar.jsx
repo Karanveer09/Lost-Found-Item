@@ -26,6 +26,12 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="sidebar-logo" onClick={() => navigate('/')}>
             <img src={logoImg} alt="logo" className="logo-img" />
           </div>
+          
+          <button className="sidebar-toggle-close" onClick={onClose} aria-label="Close Sidebar">
+             <span className="hamburger-line"></span>
+             <span className="hamburger-line"></span>
+             <span className="hamburger-line"></span>
+          </button>
         </div>
 
         <nav className="sidebar-nav">

@@ -72,34 +72,43 @@ const HostelPage = () => {
             <span className="search-icon">🔍</span>
             <input
               type="text"
-              className="input-field search-input"
-              placeholder="Search items..."
+              className="search-input"
+              placeholder="Search in hostels..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <button className="clear-search" onClick={() => setSearchQuery('')}>✕</button>
+            )}
           </div>
-          <select
-            className="input-field hostel-select"
-            value={hostelFilter}
-            onChange={(e) => setHostelFilter(e.target.value)}
-          >
-            <option value="">All Hostels</option>
-            {hostelsForFilter.map((h) => (
-              <option key={h} value={h}>{h}</option>
-            ))}
-          </select>
-          <select
-            className="input-field category-select"
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
-            <option value="">All Categories</option>
-            {CATEGORIES.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.icon} {cat.label}
-              </option>
-            ))}
-          </select>
+          <div className="select-wrapper">
+            <span className="select-icon">🏢</span>
+            <select
+              className="hostel-select"
+              value={hostelFilter}
+              onChange={(e) => setHostelFilter(e.target.value)}
+            >
+              <option value="">All Hostels</option>
+              {hostelsForFilter.map((h) => (
+                <option key={h} value={h}>{h}</option>
+              ))}
+            </select>
+          </div>
+          <div className="select-wrapper">
+            <span className="select-icon">📁</span>
+            <select
+              className="category-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.icon} {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 

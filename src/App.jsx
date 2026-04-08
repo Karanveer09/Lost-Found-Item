@@ -54,21 +54,20 @@ const AppLayout = ({ children }) => {
 
   return (
     <div className="app-container">
-      {/* Mobile-only header for internal pages */}
-      <div className="mobile-header">
+      {/* Standalone floating toggle when sidebar is closed (only on mobile/internal) */}
+      {!isMobileMenuOpen && (
         <button 
-          className="menu-toggle" 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle Menu"
+          className="floating-menu-btn" 
+          onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Open Menu"
         >
-          <span className="hamburger-bar"></span>
-          <span className="hamburger-bar"></span>
-          <span className="hamburger-bar"></span>
+          <div className="hamburger-box">
+             <span className="hamburger-line"></span>
+             <span className="hamburger-line"></span>
+             <span className="hamburger-line"></span>
+          </div>
         </button>
-        <div className="mobile-brand-logo">
-          <img src={logoImg} alt="logo" className="mobile-logo-img" />
-        </div>
-      </div>
+      )}
 
       {isMobileMenuOpen && (
         <div className="sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)} />
