@@ -23,15 +23,20 @@ const Sidebar = ({ isOpen, onClose }) => {
     <>
       <aside className={`sidebar ${isOpen ? 'show' : ''}`}>
         <div className="sidebar-header">
-          <div className="sidebar-logo" onClick={() => navigate('/')}>
+          {/* Mobile toggle button - top left inside header */}
+          <button 
+            className="sidebar-toggle-btn" 
+            onClick={(e) => { e.stopPropagation(); onClose(); }} 
+            aria-label="Close Sidebar"
+          >
+            <span className="toggle-bar"></span>
+            <span className="toggle-bar"></span>
+            <span className="toggle-bar"></span>
+          </button>
+
+          <div className="sidebar-logo" onClick={() => { navigate('/'); onClose(); }}>
             <img src={logoImg} alt="logo" className="logo-img" />
           </div>
-          
-          <button className="sidebar-toggle-close" onClick={onClose} aria-label="Close Sidebar">
-             <span className="hamburger-line"></span>
-             <span className="hamburger-line"></span>
-             <span className="hamburger-line"></span>
-          </button>
         </div>
 
         <nav className="sidebar-nav">
@@ -57,7 +62,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="profile-btn-container" onClick={() => navigate('/profile')}>
+          <div className="profile-btn-container" onClick={() => { navigate('/profile'); onClose(); }}>
             <div className="profile-mini-card">
               <div className="profile-avatar">
                 {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}

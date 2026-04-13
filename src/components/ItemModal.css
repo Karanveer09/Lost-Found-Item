@@ -1,11 +1,107 @@
-/* Add New Item Modal Specific Styles */
+/* ============================================
+   ItemModal — Premium Report Form Styles
+   ============================================ */
 
-.add-item-form {
+.item-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
+/* ---- Type Toggle: I Lost / I Found ---- */
+.type-toggle {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.35rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-secondary);
+}
+
+.type-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--text-secondary);
+  background: transparent;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.type-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.type-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Lost button - hover state */
+.type-btn:not(.active):first-child:hover {
+  color: #e11d48;
+  background: rgba(244, 63, 94, 0.05);
+}
+
+/* Found button - hover state */
+.type-btn:not(.active):last-child:hover {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+/* Active Lost */
+.type-btn.active.lost {
+  background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+  border-color: #fda4af;
+  color: #be123c;
+  box-shadow: 0 4px 15px rgba(244, 63, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.type-btn.active.lost::before {
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.08), transparent);
+  opacity: 1;
+}
+
+/* Active Found */
+.type-btn.active.found {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border-color: #6ee7b7;
+  color: #047857;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.type-btn.active.found::before {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), transparent);
+  opacity: 1;
+}
+
+/* Pulse animation on active state */
+.type-btn.active {
+  animation: typeTogglePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes typeTogglePop {
+  0% { transform: scale(0.95); }
+  50% { transform: scale(1.02) translateY(-2px); }
+  100% { transform: scale(1) translateY(-1px); }
+}
+
+/* ---- Form Row (two-column) ---- */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -18,60 +114,19 @@
   }
 }
 
-.radio-group {
-  display: flex;
-  gap: var(--space-md);
-  margin-bottom: var(--space-xs);
-}
-
-.radio-label {
-  flex: 1;
-  position: relative;
-  cursor: pointer;
-}
-
-.radio-label input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.radio-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0.75rem;
-  background: var(--bg-input);
-  border: 1px solid var(--border-secondary);
+/* ---- Form Error ---- */
+.form-error {
+  padding: 0.75rem 1rem;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: #be123c;
+  font-size: 0.85rem;
   font-weight: 500;
-  transition: all var(--transition-fast);
+  animation: scaleIn 0.2s ease;
 }
 
-.radio-btn.lost {
-  color: var(--accent-rose-light);
-}
-
-.radio-btn.found {
-  color: var(--accent-emerald-light);
-}
-
-.radio-label input:checked ~ .radio-btn {
-  background: var(--bg-tertiary);
-}
-
-.radio-label input:checked ~ .radio-btn.lost {
-  border-color: var(--accent-rose);
-  box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.2);
-}
-
-.radio-label input:checked ~ .radio-btn.found {
-  border-color: var(--accent-emerald);
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-}
-
+/* ---- File Upload ---- */
 .file-upload-container {
   width: 100%;
   border: 2px dashed var(--border-secondary);
@@ -83,7 +138,12 @@
 
 .file-upload-container:hover {
   border-color: var(--primary);
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(13, 148, 136, 0.03);
+}
+
+.file-upload-container.has-image {
+  border-style: solid;
+  border-color: var(--primary-light);
 }
 
 .drag-drop-zone {
@@ -162,21 +222,22 @@
 
 .remove-upload-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 12px;
+  right: 12px;
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.2s ease;
   z-index: 10;
+  cursor: pointer;
 }
 
 .remove-upload-btn:hover {
@@ -184,14 +245,15 @@
   transform: scale(1.1);
 }
 
+/* ---- Privacy Warning ---- */
 .privacy-warning {
   display: flex;
   gap: var(--space-md);
   padding: 1.25rem;
-  background: rgba(244, 63, 94, 0.08); /* Transparent Rose */
-  border: 1px solid rgba(244, 63, 94, 0.2);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
   border-radius: var(--radius-lg);
-  margin-top: var(--space-md);
+  animation: scaleIn 0.3s ease;
 }
 
 .warning-icon {
@@ -201,7 +263,7 @@
 
 .privacy-warning strong {
   font-size: 0.9rem;
-  color: var(--accent-rose-light);
+  color: #c2410c;
   display: block;
   margin-bottom: 4px;
 }
@@ -212,9 +274,13 @@
   line-height: 1.6;
 }
 
+/* ---- Submit Button ---- */
 .submit-btn {
   width: 100%;
-  margin-top: var(--space-md);
-  padding: 0.9rem !important;
+  margin-top: var(--space-sm);
+  padding: 0.95rem !important;
   font-size: 1rem !important;
+  border-radius: var(--radius-lg) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
 }

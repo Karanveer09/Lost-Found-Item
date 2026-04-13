@@ -220,7 +220,7 @@ const ChatPage = () => {
                     autoFocus
                   />
                   <button type="submit" className="btn-primary send-btn" disabled={!newMessage.trim()}>
-                    <span>Send</span>
+                    <span>➤</span>
                   </button>
                 </form>
               )}

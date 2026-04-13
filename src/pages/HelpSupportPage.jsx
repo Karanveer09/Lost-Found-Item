@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { addContactSubmission } from '../utils/storage';
 import './HelpSupportPage.css';
+
+const WEB3FORMS_ACCESS_KEY = '0e3809f3-0b43-4d96-aab7-abf498bb42ea';
 
 const HelpSupportPage = () => {
   const { user } = useAuth();
@@ -11,28 +12,50 @@ const HelpSupportPage = () => {
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [sending, setSending] = useState(false);
 
-  const handleSubmitContact = (e) => {
+  const handleSubmitContact = async (e) => {
     e.preventDefault();
     if (!name.trim() || !subject.trim() || !message.trim()) {
       setError('Please fill all fields.');
       return;
     }
 
-    addContactSubmission({
-      id: 'contact-' + Date.now(),
-      rollNumber: user?.rollNumber,
-      name: name.trim(),
-      subject: subject.trim(),
-      message: message.trim(),
-      submittedAt: new Date().toISOString(),
-    });
-
-    setSubmitted(true);
-    setName('');
-    setSubject('');
-    setMessage('');
+    setSending(true);
     setError('');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          from_name: 'CampusTrace Support',
+          subject: `[CampusTrace] ${subject.trim()}`,
+          name: name.trim(),
+          roll_number: user?.rollNumber || 'N/A',
+          message: message.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+        setName('');
+        setSubject('');
+        setMessage('');
+      } else {
+        setError('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -146,19 +169,25 @@ const HelpSupportPage = () => {
                 <h4>⚡ Quick Response</h4>
                 <p>We typically respond within 24 hours to all student queries.</p>
               </div>
+              <div className="sidebar-section">
+                <h4>🔒 Powered By</h4>
+                <p className="contact-powered">Web3Forms</p>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Secure form submissions directly to our inbox.</p>
+              </div>
             </div>
 
             {/* Form Section */}
             <div className="contact-form-section">
               <h3 className="contact-title">Send a Message</h3>
+              <p className="contact-subtitle">Your message will be sent directly to our support team's email.</p>
               
               {submitted ? (
                 <div className="submit-success-box animate-scale-in">
                   <span className="success-icon">✅</span>
-                  <h4>Message Sent!</h4>
-                  <p>Our team will look into your request soon.</p>
+                  <h4>Message Sent Successfully!</h4>
+                  <p>Your message has been delivered to our support team. We'll get back to you within 24 hours.</p>
                   <button className="btn-secondary" onClick={() => setSubmitted(false)}>
-                    New Support Ticket
+                    Send Another Message
                   </button>
                 </div>
               ) : (
@@ -167,7 +196,7 @@ const HelpSupportPage = () => {
 
                   <div className="form-row">
                     <div className="form-group flex-1">
-                      <label className="input-label">FullName</label>
+                      <label className="input-label">Full Name</label>
                       <input
                         type="text"
                         className="input-field"
@@ -210,8 +239,19 @@ const HelpSupportPage = () => {
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary full-width-btn">
-                    <span>Forward to Support</span>
+                  <button 
+                    type="submit" 
+                    className="btn-primary full-width-btn" 
+                    disabled={sending}
+                  >
+                    {sending ? (
+                      <span className="sending-state">
+                        <span className="sending-spinner"></span>
+                        Sending...
+                      </span>
+                    ) : (
+                      <span>📧 Send to Support</span>
+                    )}
                   </button>
                 </form>
               )}

@@ -1,3 +1,7 @@
+/* ============================================
+   Sidebar — Premium Navigation
+   ============================================ */
+
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
@@ -11,7 +15,7 @@
   flex-direction: column;
   transition: transform var(--transition-slow);
 
-  /* Entry animation: Slide in from far left */
+  /* Entry animation */
   animation: sidebarSlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -20,13 +24,61 @@
     transform: translateX(-100%);
     opacity: 0;
   }
-
   100% {
     transform: translateX(0);
     opacity: 1;
   }
 }
 
+/* ---- Mobile Toggle Button (Top-Left of Sidebar) ---- */
+.sidebar-toggle-btn {
+  display: none; /* Hidden on desktop */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 42px;
+  height: 42px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 210;
+}
+
+.sidebar-toggle-btn .toggle-bar {
+  width: 20px;
+  height: 2.5px;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background: var(--accent-teal-soft);
+  border-color: var(--primary-light);
+  transform: scale(1.05);
+}
+
+/* When sidebar is open, show X animation */
+.sidebar.show .sidebar-toggle-btn .toggle-bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.sidebar.show .sidebar-toggle-btn .toggle-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.sidebar.show .sidebar-toggle-btn .toggle-bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ---- Sidebar Header ---- */
 .sidebar-header {
   height: 140px;
   padding: 2.5rem var(--space-xl) 1.25rem;
@@ -35,48 +87,9 @@
   justify-content: center;
   border-bottom: 1px solid var(--border-secondary);
   position: relative;
-  /* For nested absolute close button */
 }
 
-.sidebar-toggle-close {
-  display: none;
-  /* Desktop hidden */
-  position: absolute;
-  top: 1.25rem;
-  right: 1rem;
-  width: 40px;
-  height: 40px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
-  border-radius: 50%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
-}
-
-.sidebar-toggle-close .hamburger-line {
-  width: 18px;
-  height: 2px;
-  background: var(--primary);
-  border-radius: 2px;
-}
-
-.sidebar-toggle-close:hover {
-  background: var(--accent-teal-soft);
-  transform: rotate(90deg);
-  /* Playful GenZ interaction */
-}
-
-@media (max-width: 1024px) {
-  .sidebar-toggle-close {
-    display: flex;
-  }
-}
-
+/* ---- Sidebar Logo ---- */
 .sidebar-logo {
   cursor: pointer;
   display: flex;
@@ -88,15 +101,11 @@
   overflow: hidden;
   border-radius: 50%;
   border: 4px solid var(--primary-light);
-  /* Slightly thicker border for "snap" look */
   box-shadow: 0 0 20px rgba(13, 148, 136, 0.2);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* Bouncy hover */
 
-  /* The "Unique Transition" from Navbar - Delayed for sequence */
   animation: logoTeleport 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
   opacity: 0;
-  /* Start hidden for sequence */
   position: relative;
 }
 
@@ -116,12 +125,10 @@
     opacity: 0;
     box-shadow: 0 0 50px var(--primary-light);
   }
-
   60% {
     transform: scale(0.9) translateY(5px);
     opacity: 0.8;
   }
-
   100% {
     transform: scale(1) translateY(0);
     opacity: 1;
@@ -130,13 +137,10 @@
 }
 
 @keyframes logoGlowEffect {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0;
     transform: scale(1);
   }
-
   50% {
     opacity: 0.15;
     transform: scale(1.2);
@@ -152,11 +156,10 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  /* Crop effect */
   transform: scale(1.3);
-  /* Zoom effect */
 }
 
+/* ---- Navigation ---- */
 .sidebar-nav {
   flex: 1;
   padding: var(--space-xl) var(--space-lg);
@@ -205,44 +208,21 @@
   font-weight: 700;
 }
 
-.sidebar-footer {
-  padding: 1rem;
-  /* More compact padding */
-  border-top: 1px solid var(--border-secondary);
-}
-
-.profile-mini-card {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.65rem 0.75rem;
-  /* More compact */
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-secondary);
-  border-radius: var(--radius-lg);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.profile-mini-card:hover {
-  border-color: var(--primary-light);
-  background: var(--bg-secondary);
-  box-shadow: var(--shadow-sm);
-}
-
+/* ---- Sidebar Footer ---- */
 .sidebar-footer {
   padding: 0.75rem;
-  /* Ultra compact */
   border-top: 1px solid var(--border-secondary);
+}
+
+.profile-btn-container {
+  cursor: pointer;
 }
 
 .profile-mini-card {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  /* Tighter gap */
   padding: 0.5rem;
-  /* Minimal padding */
   background: var(--bg-tertiary);
   border: 1px solid var(--border-secondary);
   border-radius: var(--radius-md);
@@ -254,11 +234,11 @@
 .profile-mini-card:hover {
   background: var(--bg-secondary);
   transform: translateY(-1px);
+  border-color: var(--primary-light);
 }
 
 .profile-avatar {
   width: 24px;
-  /* Absolute minimum */
   height: 24px;
   border-radius: 4px;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -280,13 +260,11 @@
 
 .profile-name {
   font-size: 1.0rem;
-  /* Tiny-tiny font */
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  /* All-caps for better fit/alignment */
 }
 
 .profile-status {
@@ -295,12 +273,22 @@
   margin-top: 1px;
 }
 
+.profile-arrow {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.profile-mini-card:hover .profile-arrow {
+  transform: translateX(3px);
+  color: var(--primary);
+}
+
 .sidebar-logout {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* Align left with other items */
   gap: var(--space-md);
   padding: 0.7rem 0.85rem;
   color: var(--text-secondary);
@@ -320,18 +308,31 @@
   font-size: 1.1rem;
 }
 
+/* ---- Mobile Bottom Nav ---- */
 .mobile-nav {
   display: none;
 }
 
+/* ---- Responsive ---- */
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
     box-shadow: none;
+    animation: none; /* CRITICAL: disable the sidebarSlideIn animation on mobile so transform toggles work */
   }
 
   .sidebar.show {
     transform: translateX(0);
     box-shadow: var(--shadow-lg);
+  }
+
+  /* Show the toggle button on mobile */
+  .sidebar-toggle-btn {
+    display: flex;
+  }
+
+  /* Add top padding to header so toggle doesn't overlap logo */
+  .sidebar-header {
+    padding-top: 4rem;
   }
 }
