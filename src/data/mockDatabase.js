@@ -3,6 +3,10 @@
 
 export const COLLEGE_STUDENTS = [];
 
+export const ADMIN_USERS = [
+  { rollNumber: 'admin', password: 'admin123', name: 'System Admin' }
+];
+
 // Generate 50 students with roll numbers 2024001 to 2024050
 for (let i = 1; i <= 50; i++) {
   COLLEGE_STUDENTS.push({

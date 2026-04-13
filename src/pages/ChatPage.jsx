@@ -6,7 +6,7 @@ import { formatDate, formatTime } from '../utils/helpers';
 import './ChatPage.css';
 
 const ChatPage = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [chats, setChatsList] = useState([]);
   const [activeChatId, setActiveChatId] = useState(null);
@@ -15,7 +15,11 @@ const ChatPage = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const allChats = getChats();
+    let allChats = getChats();
+    // Only admins see all chats, users only see theirs
+    if (!isAdmin) {
+      allChats = allChats.filter(c => c.claimerId === user?.rollNumber || c.reporterId === user?.rollNumber);
+    }
     setChatsList(allChats);
 
     const chatIdParam = searchParams.get('chatId');
@@ -24,7 +28,7 @@ const ChatPage = () => {
     } else if (allChats.length > 0) {
       setActiveChatId(allChats[0].id);
     }
-  }, [searchParams]);
+  }, [searchParams, isAdmin, user?.rollNumber]);
 
   useEffect(() => {
     if (activeChatId) {
@@ -61,9 +65,7 @@ const ChatPage = () => {
 
   const activeChat = chats.find((c) => c.id === activeChatId);
   const otherPersonId = activeChat
-    ? activeChat.reporterId === user?.rollNumber
-      ? activeChat.claimerId
-      : activeChat.reporterId
+    ? isAdmin ? activeChat.reporterId : (activeChat.reporterId === user?.rollNumber ? activeChat.claimerId : activeChat.reporterId)
     : null;
   const otherPerson = otherPersonId ? getProfile(otherPersonId) : null;
 
@@ -134,7 +136,7 @@ const ChatPage = () => {
           ) : (
             <div className="chat-items">
               {chats.map((chat) => {
-                const otherId = chat.reporterId === user?.rollNumber ? chat.claimerId : chat.reporterId;
+                const otherId = isAdmin ? chat.reporterId : (chat.reporterId === user?.rollNumber ? chat.claimerId : chat.reporterId);
                 const otherProf = getProfile(otherId);
                 return (
                   <div
@@ -181,7 +183,7 @@ const ChatPage = () => {
                     {activeChat.itemType === 'found' ? '🟢' : '🔴'} {activeChat.itemTitle}
                   </span>
                 </div>
-                {activeChat.status !== 'resolved' && (
+                {activeChat.status !== 'resolved' && !isAdmin && (
                   <button className="btn-success mark-returned-btn" onClick={handleMarkReturned}>
                     <span>✅ Mark Returned</span>
                   </button>
@@ -209,7 +211,7 @@ const ChatPage = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {activeChat.status !== 'resolved' && (
+              {activeChat.status !== 'resolved' && !isAdmin && (
                 <form className="chat-input-area" onSubmit={handleSend}>
                   <input
                     type="text"

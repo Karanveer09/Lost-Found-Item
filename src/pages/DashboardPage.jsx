@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getItems } from '../utils/storage';
+import { getVisibleItems } from '../utils/storage';
 import { formatDate, getCategoryIcon } from '../utils/helpers';
 import StatsCard from '../components/StatsCard';
 import ItemCard from '../components/ItemCard';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const { profile, user } = useAuth();
+  const { profile, user, isAdmin } = useAuth();
   const navigate = useNavigate();
-  const items = getItems();
+  const items = getVisibleItems(isAdmin);
 
   const totalLost = items.filter((i) => i.type === 'lost').length;
   const totalFound = items.filter((i) => i.type === 'found').length;

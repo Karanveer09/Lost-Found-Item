@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { DEPARTMENTS, YEARS, HOSTELS } from '../data/mockDatabase';
-import { getItems } from '../utils/storage';
+import { getVisibleItems } from '../utils/storage';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
-  const { user, profile, updateProfile } = useAuth();
+  const { user, profile, updateProfile, isAdmin } = useAuth();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(profile?.name || '');
   const [department, setDepartment] = useState(profile?.department || '');
@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const [phone, setPhone] = useState(profile?.phone || '');
   const [saved, setSaved] = useState(false);
 
-  const items = getItems();
+  const items = getVisibleItems(isAdmin);
   const myItems = items.filter((i) => i.reportedBy === user?.rollNumber);
   const myLost = myItems.filter((i) => i.type === 'lost').length;
   const myFound = myItems.filter((i) => i.type === 'found').length;
@@ -48,32 +48,40 @@ const ProfilePage = () => {
         <div className="profile-card glass-card animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <div className="profile-card-header">
             <div className="profile-avatar-large">
-              {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
+              {isAdmin ? '🛡️' : (profile?.name ? profile.name.charAt(0).toUpperCase() : '?')}
             </div>
-            <h2 className="profile-name">{profile?.name || 'Student'}</h2>
-            <span className="profile-roll">{user?.rollNumber}</span>
+            <h2 className="profile-name">
+              {isAdmin ? (profile?.name || 'Dr. Arthur Pendelton') : (profile?.name || 'Student')}
+            </h2>
+            <span className="profile-roll">{isAdmin ? (profile?.department || 'Director of Operations') : user?.rollNumber}</span>
             <div className="profile-tags">
-              <span className="profile-tag">{profile?.department || 'No Department'}</span>
-              <span className="profile-tag">{profile?.year || 'No Year'}</span>
+              {!isAdmin && (
+                <>
+                  <span className="profile-tag">{profile?.department || 'No Department'}</span>
+                  <span className="profile-tag">{profile?.year || 'No Year'}</span>
+                </>
+              )}
             </div>
           </div>
 
-          <div className="profile-stats-row">
-            <div className="profile-stat">
-              <span className="profile-stat-value">{myLost}</span>
-              <span className="profile-stat-label">Lost Reports</span>
+          {!isAdmin && (
+            <div className="profile-stats-row">
+              <div className="profile-stat">
+                <span className="profile-stat-value">{myLost}</span>
+                <span className="profile-stat-label">Lost Reports</span>
+              </div>
+              <div className="profile-stat-divider" />
+              <div className="profile-stat">
+                <span className="profile-stat-value">{myFound}</span>
+                <span className="profile-stat-label">Found Reports</span>
+              </div>
+              <div className="profile-stat-divider" />
+              <div className="profile-stat">
+                <span className="profile-stat-value">{myItems.length}</span>
+                <span className="profile-stat-label">Total</span>
+              </div>
             </div>
-            <div className="profile-stat-divider" />
-            <div className="profile-stat">
-              <span className="profile-stat-value">{myFound}</span>
-              <span className="profile-stat-label">Found Reports</span>
-            </div>
-            <div className="profile-stat-divider" />
-            <div className="profile-stat">
-              <span className="profile-stat-value">{myItems.length}</span>
-              <span className="profile-stat-label">Total</span>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Edit Profile */}
@@ -115,6 +123,13 @@ const ProfilePage = () => {
               <span className="field-value">{user?.rollNumber}</span>
             </div>
 
+            <div className="info-item">
+              <span className="info-label">{isAdmin ? 'Office Location / Base' : 'Hosteler Status'}</span>
+              <span className="info-value">
+                {isAdmin ? (profile?.hostel || 'Main Administrative Block') : (isHosteler ? `Yes - ${profile?.hostel}` : 'Day Scholar')}
+              </span>
+            </div>
+
             <div className="profile-field">
               <label className="input-label">Department</label>
               {editing ? (
@@ -142,10 +157,27 @@ const ProfilePage = () => {
             <div className="profile-field">
               <label className="input-label">Hostel</label>
               {editing ? (
-                <select className="input-field" value={hostel} onChange={(e) => setHostel(e.target.value)}>
-                  <option value="">Select</option>
-                  {HOSTELS.map((h) => <option key={h} value={h}>{h}</option>)}
-                </select>
+                isAdmin ? (
+                  <input
+                    type="text"
+                    className="input-field"
+                    value={hostel}
+                    onChange={(e) => setHostel(e.target.value)}
+                    placeholder="e.g. Office of the Director"
+                  />
+                ) : (
+                  <select 
+                    className="input-field" 
+                    value={hostel} 
+                    onChange={(e) => setHostel(e.target.value)}
+                  >
+                    <option value="Day Scholar">Day Scholar (No Hostel)</option>
+                    <option value="Boys Hostel 1">Boys Hostel 1</option>
+                    <option value="Boys Hostel 2">Boys Hostel 2</option>
+                    <option value="Girls Hostel 1">Girls Hostel 1</option>
+                    <option value="Girls Hostel 2">Girls Hostel 2</option>
+                  </select>
+                )
               ) : (
                 <span className="field-value">{profile?.hostel || '—'}</span>
               )}

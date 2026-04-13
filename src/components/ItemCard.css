@@ -132,8 +132,8 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: #000000;
+  font-weight: 600;
 }
 
 .item-card-reporter-avatar {
@@ -148,4 +148,86 @@
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--primary);
+}
+
+.admin-card-delete-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-rose);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-card-delete-btn:hover {
+  background: var(--accent-rose);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.admin-delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-delete-modal {
+  padding: 2.5rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-delete-modal .modal-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.admin-delete-modal h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.admin-delete-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.admin-delete-modal .modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.modal-confirm-btn {
+  background: var(--accent-rose) !important;
+  color: white;
+  transition: all 0.25s ease;
+  border: none;
+}
+
+.modal-confirm-btn:hover {
+  background: #991b1b !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
 }

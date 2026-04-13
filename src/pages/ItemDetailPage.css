@@ -113,11 +113,12 @@
 .reporter-name {
   font-weight: 600;
   font-size: 1.05rem;
+  color: #000000;
 }
 
 .reporter-dept {
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .reporter-label {
@@ -129,7 +130,7 @@
   border-radius: var(--radius-sm);
   font-size: 0.7rem;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 600;
   letter-spacing: 0.05em;
   border: 1px solid var(--border-secondary);
@@ -159,13 +160,15 @@
 .claimed-notice {
   background: rgba(6, 182, 212, 0.1);
   border: 1px solid rgba(6, 182, 212, 0.3);
-  color: var(--accent-cyan);
+  color: #0891b2; /* distinct cyan-600 text */
+  font-weight: 500;
 }
 
 .returned-notice {
   background: rgba(16, 185, 129, 0.1);
   border: 1px solid rgba(16, 185, 129, 0.3);
-  color: var(--accent-emerald-light);
+  color: #047857; /* readable emerald-700 text */
+  font-weight: 500;
 }
 
 .owner-notice {

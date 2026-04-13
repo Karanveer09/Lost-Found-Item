@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getItems } from '../utils/storage';
+import { getVisibleItems } from '../utils/storage';
 import { CATEGORIES } from '../data/mockDatabase';
+import { useAuth } from '../context/AuthContext';
 import ItemCard from '../components/ItemCard';
 import ItemModal from '../components/ItemModal';
 import './CampusPage.css';
 
 const CampusPage = () => {
+  const { isAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [items, setItemsList] = useState([]);
@@ -23,7 +25,7 @@ const CampusPage = () => {
   }, [location.state]);
 
   const loadItems = () => {
-    const all = getItems().filter((i) => i.module === 'campus');
+    const all = getVisibleItems(isAdmin).filter((i) => i.module === 'campus');
     setItemsList(all);
   };
 
@@ -45,13 +47,21 @@ const CampusPage = () => {
     <div className="campus-page">
       <div className="page-header animate-fade-in">
         <div>
-          <h1 className="page-title">🏫 Campus Lost & Found</h1>
-          <p className="page-subtitle">Report and find items lost on campus</p>
+          {isAdmin ? (
+            <h1 className="page-title" style={{ color: 'var(--accent-rose)', fontWeight: 'bold' }}>🏫 Campus Monitoring</h1>
+          ) : (
+            <h1 className="page-title">🏫 Campus Lost & Found</h1>
+          )}
+          <p className="page-subtitle">
+            {isAdmin ? 'Monitor and moderate all items lost on campus' : 'Report and find items lost on campus'}
+          </p>
         </div>
-        <button className="btn-primary report-btn" onClick={() => setShowModal(true)}>
-          <span>+</span>
-          <span>Report Item</span>
-        </button>
+        {!isAdmin && (
+          <button className="btn-primary report-btn" onClick={() => setShowModal(true)}>
+            <span>+</span>
+            <span>Report Item</span>
+          </button>
+        )}
       </div>
 
       {/* Tabs */}

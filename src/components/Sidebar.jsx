@@ -15,9 +15,21 @@ const navItems = [
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const { profile, logout } = useAuth();
+  const { profile, logout, isAdmin } = useAuth();
   const chats = getChats();
   const unreadCount = chats?.filter(c => c.unread)?.length || 0;
+
+  let dynamicNavItems = [...navItems];
+  if (isAdmin) {
+    dynamicNavItems = [
+      { path: '/admin', label: 'Global Dashboard', icon: '⚡' },
+      { path: '/admin/actions', label: 'Take Actions', icon: '⚖️' },
+      { path: '/campus', label: 'Monitor Campus', icon: '🏫' },
+      { path: '/hostel', label: 'Monitor Hostel', icon: '🏢' },
+      { path: '/chat', label: 'Monitor Chats', icon: '💬' },
+      { path: '/admin/guidelines', label: 'Admin Guidelines', icon: '📖' },
+    ];
+  }
 
   return (
     <>
@@ -43,10 +55,11 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="nav-section">
             <span className="section-label">MAIN NAVIGATION</span>
             <div className="nav-links">
-              {navItems.map((item) => (
+              {dynamicNavItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
+                  end={item.path === '/admin'}
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                   onClick={onClose}
                 >
@@ -62,14 +75,20 @@ const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="profile-btn-container" onClick={() => { navigate('/profile'); onClose(); }}>
+          <div 
+            className="profile-btn-container" 
+            onClick={() => { 
+              navigate('/profile'); 
+              onClose(); 
+            }}
+          >
             <div className="profile-mini-card">
               <div className="profile-avatar">
-                {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
+                {isAdmin ? '🛡️' : (profile?.name ? profile.name.charAt(0).toUpperCase() : '?')}
               </div>
               <div className="profile-info">
-                <span className="profile-name">{profile?.name || 'Student'}</span>
-                <span className="profile-status">View Profile</span>
+                <span className="profile-name">{isAdmin ? 'System Administrator' : (profile?.name || 'Student')}</span>
+                <span className="profile-status" style={isAdmin ? {color: 'var(--accent-rose)'} : {}}>View Profile</span>
               </div>
               <span className="profile-arrow">→</span>
             </div>
@@ -84,7 +103,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       {/* Mobile Nav */}
       <nav className="mobile-nav">
-        {navItems.map((item) => (
+        {dynamicNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}

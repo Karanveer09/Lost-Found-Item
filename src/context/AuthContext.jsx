@@ -20,8 +20,12 @@ export const AuthProvider = ({ children }) => {
     const current = getCurrentUser();
     if (current) {
       setUser(current);
-      const prof = getProfile(current.rollNumber);
-      if (prof) setProfileState(prof);
+      if (current.isAdmin) {
+        setProfileState({ name: 'System Admin', department: 'Administration', year: 'Staff' });
+      } else {
+        const prof = getProfile(current.rollNumber);
+        if (prof) setProfileState(prof);
+      }
     }
     // Seed demo items if none exist
     if (getItems().length === 0) {
@@ -34,8 +38,12 @@ export const AuthProvider = ({ children }) => {
     const result = authenticate(rollNumber, password);
     if (result.success) {
       setUser(result.user);
-      const prof = getProfile(rollNumber);
-      if (prof) setProfileState(prof);
+      if (result.user.isAdmin) {
+        setProfileState({ name: 'System Admin', department: 'Administration', year: 'Staff' });
+      } else {
+        const prof = getProfile(rollNumber);
+        if (prof) setProfileState(prof);
+      }
     }
     return result;
   };
@@ -47,17 +55,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateProfile = (profileData) => {
-    if (!user) return;
+    if (!user || user.isAdmin) return;
     const updated = { ...profile, ...profileData };
     saveProfile(user.rollNumber, updated);
     setProfileState(updated);
   };
 
   const hasProfile = user ? isProfileComplete(user.rollNumber) : false;
+  const isAdmin = user?.isAdmin || false;
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, login, logout, updateProfile, hasProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, login, logout, updateProfile, hasProfile, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
 };
+

@@ -58,7 +58,29 @@ export const updateItem = (id, updates) => {
   }
   return null;
 };
+export const deleteItem = (id) => {
+  const items = getItems();
+  const newItems = items.filter((i) => i.id !== id);
+  setItems(newItems);
+  return true;
+};
 
+export const getVisibleItems = (isAdmin) => {
+  const items = getItems();
+  if (isAdmin) return items;
+
+  // Filter 30 days
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  return items.filter(item => {
+    // try to parse reportedAt, fallback to date
+    const itemDateStr = item.reportedAt || item.date;
+    if (!itemDateStr) return true;
+    const itemDate = new Date(itemDateStr);
+    return itemDate >= thirtyDaysAgo;
+  });
+};
 export const getChats = () => storage.get('chats') || [];
 export const setChats = (chats) => storage.set('chats', chats);
 export const getChatMessages = (chatId) => storage.get(`chat_messages_${chatId}`) || [];
@@ -75,4 +97,20 @@ export const addContactSubmission = (submission) => {
   const subs = getContactSubmissions();
   subs.unshift(submission);
   storage.set('contactSubmissions', subs);
+};
+
+export const getSuspendedUsers = () => storage.get('suspendedUsers') || {};
+export const isUserSuspended = (rollNumber) => {
+  const suspended = getSuspendedUsers();
+  return !!suspended[rollNumber];
+};
+export const toggleSuspendUser = (rollNumber) => {
+  const suspended = getSuspendedUsers();
+  if (suspended[rollNumber]) {
+    delete suspended[rollNumber];
+  } else {
+    suspended[rollNumber] = true;
+  }
+  storage.set('suspendedUsers', suspended);
+  return !!suspended[rollNumber];
 };

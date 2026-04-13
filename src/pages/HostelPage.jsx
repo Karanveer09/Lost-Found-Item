@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getItems } from '../utils/storage';
+import { getVisibleItems } from '../utils/storage';
 import { CATEGORIES, HOSTELS } from '../data/mockDatabase';
+import { useAuth } from '../context/AuthContext';
 import ItemCard from '../components/ItemCard';
 import ItemModal from '../components/ItemModal';
 import './CampusPage.css';
 
 const HostelPage = () => {
+  const { isAdmin } = useAuth();
   const navigate = useNavigate();
   const [items, setItemsList] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
@@ -20,7 +22,7 @@ const HostelPage = () => {
   }, []);
 
   const loadItems = () => {
-    const all = getItems().filter((i) => i.module === 'hostel');
+    const all = getVisibleItems(isAdmin).filter((i) => i.module === 'hostel');
     setItemsList(all);
   };
 
@@ -45,13 +47,21 @@ const HostelPage = () => {
     <div className="hostel-page">
       <div className="page-header animate-fade-in">
         <div>
-          <h1 className="page-title">🏠 Hostel Lost & Found</h1>
-          <p className="page-subtitle">Report and find items lost in hostels</p>
+          {isAdmin ? (
+            <h1 className="page-title" style={{ color: 'var(--accent-rose)', fontWeight: 'bold' }}>🏠 Hostel Monitoring</h1>
+          ) : (
+            <h1 className="page-title">🏠 Hostel Lost & Found</h1>
+          )}
+          <p className="page-subtitle">
+            {isAdmin ? 'Monitor and moderate all items lost in hostels' : 'Report and find items lost in hostels'}
+          </p>
         </div>
-        <button className="btn-primary report-btn" onClick={() => setShowModal(true)}>
-          <span>+</span>
-          <span>Report Item</span>
-        </button>
+        {!isAdmin && (
+          <button className="btn-primary report-btn" onClick={() => setShowModal(true)}>
+            <span>+</span>
+            <span>Report Item</span>
+          </button>
+        )}
       </div>
 
       <div className="filter-section animate-fade-in" style={{ animationDelay: '0.1s' }}>

@@ -33,7 +33,7 @@ section.revealed {
   right: 0;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 40%);
+  background-image: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
   pointer-events: none;
 }
 
@@ -121,7 +121,7 @@ section.revealed {
 .landing-layout .navbar-date,
 .landing-layout .nav-btn-icon,
 .landing-layout .dropdown-name {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .landing-layout .breadcrumb-pill {
@@ -136,7 +136,7 @@ section.revealed {
 }
 
 .landing-layout .logo-name {
-   color: white !important;
+  color: white !important;
 }
 
 .hero-cta {
@@ -534,13 +534,28 @@ section.revealed {
 
 /* Animations Variables */
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
-  50% { transform: translateY(-20px) rotate(calc(var(--rot, 0deg) + 2deg)); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(calc(var(--rot, 0deg) + 2deg));
+  }
 }
 
-.visual-card.lost { --rot: -5deg; }
-.visual-card.found { --rot: 5deg; }
-.visual-card.chat { --rot: 0deg; }
+.visual-card.lost {
+  --rot: -5deg;
+}
+
+.visual-card.found {
+  --rot: 5deg;
+}
+
+.visual-card.chat {
+  --rot: 0deg;
+}
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
@@ -551,7 +566,7 @@ section.revealed {
     gap: var(--space-xl);
     min-height: auto;
   }
-  
+
   .hero-content {
     max-width: 100%;
     display: flex;
@@ -559,20 +574,21 @@ section.revealed {
     align-items: center;
     padding-bottom: var(--space-2xl);
   }
-  
+
   .hero-visual {
-    display: none; /* [VANISH] As requested for decluttering smaller screens */
+    display: none;
+    /* [VANISH] As requested for decluttering smaller screens */
   }
-  
+
   .hero-cta {
     justify-content: center;
   }
-  
+
   .about-grid {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  
+
   .feature {
     justify-content: center;
     text-align: left;
@@ -592,11 +608,11 @@ section.revealed {
   section {
     padding: var(--space-xl) var(--space-lg);
   }
-  
+
   .hero-title {
     font-size: 2.8rem;
   }
-  
+
   .landing-items-grid {
     grid-template-columns: 1fr;
   }
@@ -607,31 +623,32 @@ section.revealed {
     font-size: 2.2rem;
     word-break: break-word;
   }
-  
+
   .hero-subtitle {
-     font-size: 1rem;
+    font-size: 1rem;
   }
-  
+
   .hero-cta {
     flex-direction: column;
     width: 100%;
     gap: var(--space-sm);
   }
 
-  .hero-cta button, .hero-cta .btn {
+  .hero-cta button,
+  .hero-cta .btn {
     width: 100%;
     justify-content: center;
   }
-  
+
   .section-title {
     font-size: 1.8rem;
   }
-  
+
   .action-icon {
     font-size: 2rem;
     padding: 1rem;
   }
-  
+
   .action-card {
     padding: var(--space-xl);
     flex-direction: column;

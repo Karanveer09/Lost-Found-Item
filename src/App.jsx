@@ -14,6 +14,9 @@ import ProfilePage from './pages/ProfilePage';
 import HelpSupportPage from './pages/HelpSupportPage';
 import ProfileSetup from './pages/ProfileSetup';
 import ItemDetailPage from './pages/ItemDetailPage';
+import AdminPage from './pages/AdminPage';
+import AdminActionsPage from './pages/AdminActionsPage';
+import AdminGuidelinesPage from './pages/AdminGuidelinesPage';
 import logoImg from './assets/Logo.jpg';
 import './App.css';
 
@@ -40,6 +43,19 @@ const SetupRoute = ({ children }) => {
   if (loading) return <div className="loading-screen">Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (hasProfile) return <Navigate to="/" replace />;
+  return children;
+};
+
+const AdminRoute = ({ children }) => {
+  const { user, loading, isAdmin } = useAuth();
+  if (loading) return <div className="loading-screen">Loading...</div>;
+  if (!user || !isAdmin) return <Navigate to="/" replace />;
+  return children;
+};
+
+const RootRoute = ({ children }) => {
+  const { isAdmin } = useAuth();
+  if (isAdmin) return <Navigate to="/admin" replace />;
   return children;
 };
 
@@ -105,7 +121,7 @@ function App() {
           <Route path="/login" element={<AuthRoute><LoginPage /></AuthRoute>} />
           <Route path="/setup-profile" element={<SetupRoute><ProfileSetup /></SetupRoute>} />
           
-          <Route path="/" element={<ProtectedRoute><LandingLayout><LandingPage /></LandingLayout></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><RootRoute><LandingLayout><LandingPage /></LandingLayout></RootRoute></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
           <Route path="/campus" element={<ProtectedRoute><AppLayout><CampusPage /></AppLayout></ProtectedRoute>} />
           <Route path="/hostel" element={<ProtectedRoute><AppLayout><HostelPage /></AppLayout></ProtectedRoute>} />
@@ -114,6 +130,9 @@ function App() {
           <Route path="/chat/:chatId" element={<ProtectedRoute><AppLayout><ChatPage /></AppLayout></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><AppLayout><ProfilePage /></AppLayout></ProtectedRoute>} />
           <Route path="/help" element={<ProtectedRoute><AppLayout><HelpSupportPage /></AppLayout></ProtectedRoute>} />
+          <Route path="/admin" element={<AdminRoute><AppLayout><AdminPage /></AppLayout></AdminRoute>} />
+          <Route path="/admin/actions" element={<AdminRoute><AppLayout><AdminActionsPage /></AppLayout></AdminRoute>} />
+          <Route path="/admin/guidelines" element={<AdminRoute><AppLayout><AdminGuidelinesPage /></AppLayout></AdminRoute>} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

@@ -94,7 +94,7 @@ const LandingPage = () => {
               and return found items with ease and security.
             </p>
             <div className="hero-cta">
-              <button className="btn-primary btn-xl btn-white" onClick={() => navigate('/campus')}>
+              <button className="btn-primary btn-xl btn-white get-started-btn" onClick={() => navigate('/campus')}>
                 Get Started Now
               </button>
               <button className="btn-secondary btn-xl btn-outline-white" onClick={() => {

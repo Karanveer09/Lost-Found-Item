@@ -206,6 +206,7 @@
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-full);
   font-weight: 700;
+  transition: all 0.25s ease;
 }
 
 /* ---- Sidebar Footer ---- */

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getItems, updateItem, getChats, setChats, getProfile } from '../utils/storage';
+import { getVisibleItems, updateItem, getChats, setChats, getProfile } from '../utils/storage';
 import { formatDate, getCategoryIcon, getCategoryLabel, generateChatId } from '../utils/helpers';
 import './ItemDetailPage.css';
 
 const ItemDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [item, setItem] = useState(null);
 
   useEffect(() => {
-    const items = getItems();
+    const items = getVisibleItems(isAdmin);
     const found = items.find((i) => i.id === id);
     setItem(found);
   }, [id]);
@@ -144,7 +144,7 @@ const ItemDetailPage = () => {
           <span className="reporter-label">Reported by</span>
         </div>
 
-        {!isOwner && item.status === 'open' && (
+        {!isOwner && item.status === 'open' && !isAdmin && (
           <div className="item-detail-actions">
             {item.type === 'found' ? (
               <button className="btn-primary claim-btn" onClick={handleClaim}>
