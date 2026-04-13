@@ -8,14 +8,14 @@ import './ItemDetailPage.css';
 const ItemDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, profile } = useAuth();
   const [item, setItem] = useState(null);
 
   useEffect(() => {
     const items = getVisibleItems(isAdmin);
     const found = items.find((i) => i.id === id);
     setItem(found);
-  }, [id]);
+  }, [id, isAdmin]);
 
   if (!item) {
     return (
@@ -33,8 +33,13 @@ const ItemDetailPage = () => {
 
   const reporter = getProfile(item.reportedBy);
   const isOwner = item.reportedBy === user?.rollNumber;
+  const isDayScholar = profile?.hostel?.includes('Day Scholar');
+  const isHostelItem = item.module === 'hostel';
 
   const handleClaim = () => {
+    if (isDayScholar && isHostelItem) {
+      return; // Safety check
+    }
     // Check if chat already exists
     const chats = getChats();
     const existingChat = chats.find(
@@ -146,7 +151,11 @@ const ItemDetailPage = () => {
 
         {!isOwner && item.status === 'open' && !isAdmin && (
           <div className="item-detail-actions">
-            {item.type === 'found' ? (
+            {isDayScholar && isHostelItem ? (
+              <div className="day-scholar-notice-inline">
+                <p>ℹ️ As a Day Scholar, you can view this hostel item's details but are restricted from claiming it directly.</p>
+              </div>
+            ) : item.type === 'found' ? (
               <button className="btn-primary claim-btn" onClick={handleClaim}>
                 <span>🙋 This is mine — Claim Item</span>
               </button>

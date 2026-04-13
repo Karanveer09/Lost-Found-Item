@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { DEPARTMENTS, YEARS, HOSTELS } from '../data/mockDatabase';
 import { getVisibleItems } from '../utils/storage';
@@ -14,11 +14,29 @@ const ProfilePage = () => {
   const [roomNumber, setRoomNumber] = useState(profile?.roomNumber || '');
   const [phone, setPhone] = useState(profile?.phone || '');
   const [saved, setSaved] = useState(false);
+  const [myStats, setMyStats] = useState({ lost: 0, found: 0, total: 0 });
 
-  const items = getVisibleItems(isAdmin);
-  const myItems = items.filter((i) => i.reportedBy === user?.rollNumber);
-  const myLost = myItems.filter((i) => i.type === 'lost').length;
-  const myFound = myItems.filter((i) => i.type === 'found').length;
+  useEffect(() => {
+    const allItems = getVisibleItems(isAdmin);
+    const myItems = allItems.filter((i) => i.reportedBy === user?.rollNumber);
+    setMyStats({
+      lost: myItems.filter((i) => i.type === 'lost').length,
+      found: myItems.filter((i) => i.type === 'found').length,
+      total: myItems.length
+    });
+  }, [user?.rollNumber, isAdmin]);
+
+  // Sync local state when profile loads/changes
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || '');
+      setDepartment(profile.department || '');
+      setYear(profile.year || '');
+      setHostel(profile.hostel || '');
+      setRoomNumber(profile.roomNumber || '');
+      setPhone(profile.phone || '');
+    }
+  }, [profile]);
 
   const handleSave = () => {
     updateProfile({
@@ -67,17 +85,17 @@ const ProfilePage = () => {
           {!isAdmin && (
             <div className="profile-stats-row">
               <div className="profile-stat">
-                <span className="profile-stat-value">{myLost}</span>
+                <span className="profile-stat-value">{myStats.lost}</span>
                 <span className="profile-stat-label">Lost Reports</span>
               </div>
               <div className="profile-stat-divider" />
               <div className="profile-stat">
-                <span className="profile-stat-value">{myFound}</span>
+                <span className="profile-stat-value">{myStats.found}</span>
                 <span className="profile-stat-label">Found Reports</span>
               </div>
               <div className="profile-stat-divider" />
               <div className="profile-stat">
-                <span className="profile-stat-value">{myItems.length}</span>
+                <span className="profile-stat-value">{myStats.total}</span>
                 <span className="profile-stat-label">Total</span>
               </div>
             </div>
@@ -171,11 +189,10 @@ const ProfilePage = () => {
                     value={hostel} 
                     onChange={(e) => setHostel(e.target.value)}
                   >
-                    <option value="Day Scholar">Day Scholar (No Hostel)</option>
-                    <option value="Boys Hostel 1">Boys Hostel 1</option>
-                    <option value="Boys Hostel 2">Boys Hostel 2</option>
-                    <option value="Girls Hostel 1">Girls Hostel 1</option>
-                    <option value="Girls Hostel 2">Girls Hostel 2</option>
+                    <option value="">Select where you stay</option>
+                    {HOSTELS.map((h) => (
+                      <option key={h} value={h}>{h}</option>
+                    ))}
                   </select>
                 )
               ) : (

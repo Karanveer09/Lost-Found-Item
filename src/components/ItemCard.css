@@ -221,13 +221,15 @@
 
 .modal-confirm-btn {
   background: var(--accent-rose) !important;
-  color: white;
+  color: white !important;
+  border: 2px solid transparent !important;
   transition: all 0.25s ease;
-  border: none;
 }
 
 .modal-confirm-btn:hover {
-  background: #991b1b !important;
+  background: white !important;
+  color: var(--accent-rose) !important;
+  border-color: var(--accent-rose) !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 8px 20px rgba(244, 63, 94, 0.2);
 }

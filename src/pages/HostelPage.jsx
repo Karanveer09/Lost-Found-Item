@@ -8,7 +8,7 @@ import ItemModal from '../components/ItemModal';
 import './CampusPage.css';
 
 const HostelPage = () => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, profile } = useAuth();
   const navigate = useNavigate();
   const [items, setItemsList] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
@@ -56,7 +56,7 @@ const HostelPage = () => {
             {isAdmin ? 'Monitor and moderate all items lost in hostels' : 'Report and find items lost in hostels'}
           </p>
         </div>
-        {!isAdmin && (
+        {!isAdmin && !profile?.hostel?.includes('Day Scholar') && (
           <button className="btn-primary report-btn" onClick={() => setShowModal(true)}>
             <span>+</span>
             <span>Report Item</span>
@@ -130,11 +130,18 @@ const HostelPage = () => {
             <p className="empty-state-text">
               {searchQuery || categoryFilter || hostelFilter
                 ? 'Try adjusting your filters.'
-                : 'No hostel items reported yet. Report one now!'}
+                : 'No hostel items reported yet.'}
             </p>
-            <button className="btn-primary" onClick={() => setShowModal(true)} style={{ marginTop: '1rem' }}>
-              <span>Report an Item</span>
-            </button>
+            {!isAdmin && !profile?.hostel?.includes('Day Scholar') && (
+              <button className="btn-primary" onClick={() => setShowModal(true)} style={{ marginTop: '1rem' }}>
+                <span>Report an Item</span>
+              </button>
+            )}
+            {profile?.hostel?.includes('Day Scholar') && (
+              <p className="day-scholar-note" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '1rem' }}>
+                ℹ️ Day Scholars can view items but cannot post in the Hostel Hub.
+              </p>
+            )}
           </div>
         ) : (
           filteredItems.map((item) => (
