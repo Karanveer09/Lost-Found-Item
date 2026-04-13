@@ -1,17 +1,21 @@
+/* ============================================
+   Profile Setup Page Styles
+   ============================================ */
+
 .profile-setup-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary);
-  padding: var(--space-md);
+  padding: var(--space-xl);
   position: relative;
   overflow: hidden;
 }
 
-.setup-container {
+.profile-setup-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 580px;
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -20,34 +24,324 @@
   padding: var(--space-2xl);
   position: relative;
   z-index: 10;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
+/* ---- Back to Login Button ---- */
+.back-to-login-btn {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-lg);
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: all var(--transition-normal);
+  z-index: 20;
+}
+
+.back-to-login-btn:hover {
+  color: var(--accent-rose);
+}
+
+.back-to-login-btn .btn-arrow {
+  transition: transform 0.2s ease;
+}
+
+.back-to-login-btn:hover .btn-arrow {
+  transform: translateX(-4px);
+}
+
+/* ---- Global Journey Stepper ---- */
+.global-journey-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px dashed var(--border-glass);
+}
+
+.macro-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  position: relative;
+  z-index: 2;
+}
+
+.macro-step-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all var(--transition-normal);
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  border: 2px solid var(--border-secondary);
+}
+
+.macro-step-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-normal);
+}
+
+/* Completed Step */
+.macro-step.completed .macro-step-icon {
+  background: var(--accent-emerald);
+  color: white;
+  border-color: var(--accent-emerald);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.macro-step.completed .macro-step-text {
+  color: var(--accent-emerald);
+}
+
+/* Current Step */
+.macro-step.current .macro-step-icon {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
+  transform: scale(1.1);
+}
+
+.macro-step.current .macro-step-text {
+  color: var(--primary);
+}
+
+/* Connector Lines */
+.macro-connector {
+  flex: 1;
+  height: 3px;
+  background: var(--bg-tertiary);
+  margin: 0 var(--space-sm);
+  margin-top: -20px; /* Align with circles */
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.macro-connector.completed {
+  background: linear-gradient(90deg, var(--accent-emerald), var(--primary));
+}
+
+/* ---- Header ---- */
 .setup-header {
   text-align: center;
   margin-bottom: var(--space-xl);
 }
 
-.setup-header h1 {
+.setup-title {
   font-family: var(--font-heading);
   font-size: 1.8rem;
   color: var(--text-primary);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
-.setup-header p {
+.setup-subtitle {
   color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
+/* ---- Sub-step indicator ---- */
+.sub-step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  background: var(--bg-tertiary);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+}
+
+.sub-step-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+}
+
+.sub-step-pill.active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.sub-step-pill.completed {
+  color: var(--accent-emerald);
+}
+
+.sub-step-line {
+  width: 30px;
+  height: 2px;
+  background: var(--border-secondary);
+}
+
+/* ---- Form System ---- */
 .setup-form {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
 
-.setup-btn {
-  margin-top: var(--space-md);
-  height: 3rem;
-  font-size: 1.05rem;
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.grid-full {
+  grid-column: 1 / -1;
+}
+
+/* Form Inputs with Icons */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.input-with-icon .input-field {
+  padding-left: 2.8rem;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: all var(--transition-normal);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.select-lg {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* ---- Actions & Buttons ---- */
+.form-actions {
+  margin-top: var(--space-sm);
+}
+
+.split-actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-md);
+}
+
+.full-width-btn {
+  width: 100%;
+}
+
+.btn-arrow, .btn-icon {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  margin: 0 0.3rem;
+}
+
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.btn-secondary:hover .btn-arrow {
+  transform: translateX(-4px);
+}
+
+.btn-primary:hover .btn-icon {
+  transform: translateY(-2px) scale(1.1);
+}
+
+/* ---- Footer ---- */
+.setup-footer {
+  text-align: center;
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-glass);
+}
+
+.setup-roll {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.highlight-roll {
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--bg-tertiary);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-left: 0.3rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .profile-setup-container {
+    padding: var(--space-lg);
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+  
+  .macro-step-text {
+    font-size: 0.65rem;
+  }
+  
+  .macro-step-icon {
+    width: 28px;
+    height: 28px;
+  }
 }

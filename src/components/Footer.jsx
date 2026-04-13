@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logoImg from '../assets/Logo.jpg';
 import './Footer.css';
 
@@ -24,25 +25,25 @@ const Footer = () => {
             <div className="footer-links-group">
               <h4>Platform</h4>
               <ul>
-                <li><a href="/campus">Campus Hub</a></li>
-                <li><a href="/hostel">Hostel Block</a></li>
-                <li><a href="/chat">Messages</a></li>
+                <li><Link to="/campus">Campus Hub</Link></li>
+                <li><Link to="/hostel">Hostel Block</Link></li>
+                <li><Link to="/chat">Messages</Link></li>
               </ul>
             </div>
             <div className="footer-links-group">
               <h4>Support</h4>
               <ul>
-                <li><a href="/help">Guidelines</a></li>
-                <li><a href="/help">Privacy Policy</a></li>
-                <li><a href="/help">Terms of Use</a></li>
+                <li><Link to="/help">Guidelines</Link></li>
+                <li><Link to="/help">Privacy Policy</Link></li>
+                <li><Link to="/help">Terms of Use</Link></li>
               </ul>
             </div>
             <div className="footer-links-group">
               <h4>Organization</h4>
               <ul>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#vision">Our Vision</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><Link to="/">About Us</Link></li>
+                <li><Link to="/">Our Vision</Link></li>
+                <li><Link to="/help">Contact</Link></li>
               </ul>
             </div>
           </div>
