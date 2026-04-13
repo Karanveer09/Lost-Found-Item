@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './HelpSupportPage.css';
 
-const WEB3FORMS_ACCESS_KEY = '0e3809f3-0b43-4d96-aab7-abf498bb42ea';
+const WEB3FORMS_ACCESS_KEY = '68805db9-a4ec-4d39-a4d3-eac1c6877ed1';
 
 const HelpSupportPage = () => {
   const { user } = useAuth();
@@ -180,7 +180,7 @@ const HelpSupportPage = () => {
             <div className="contact-form-section">
               <h3 className="contact-title">Send a Message</h3>
               <p className="contact-subtitle">Your message will be sent directly to our support team's email.</p>
-              
+
               {submitted ? (
                 <div className="submit-success-box animate-scale-in">
                   <span className="success-icon">✅</span>
@@ -239,9 +239,9 @@ const HelpSupportPage = () => {
                     />
                   </div>
 
-                  <button 
-                    type="submit" 
-                    className="btn-primary full-width-btn" 
+                  <button
+                    type="submit"
+                    className="btn-primary full-width-btn"
                     disabled={sending}
                   >
                     {sending ? (
