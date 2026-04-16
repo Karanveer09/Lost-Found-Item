@@ -191,23 +191,50 @@ const ChatPage = () => {
               </div>
 
               <div className="chat-messages">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`chat-bubble ${
-                      msg.senderId === 'system'
-                        ? 'system'
-                        : msg.senderId === user?.rollNumber
-                        ? 'sent'
-                        : 'received'
-                    }`}
-                  >
-                    <div className="bubble-content">
-                      <p>{msg.text}</p>
-                      <span className="bubble-time">{formatTime(msg.timestamp)}</span>
+                {messages.map((msg) => {
+                  const isSystem = msg.senderId === 'system';
+                  let bubbleClass = '';
+                  let senderLabel = '';
+
+                  if (isSystem) {
+                    bubbleClass = 'system';
+                  } else if (isAdmin) {
+                    // Admin view: distinguish by role
+                    const isReporter = msg.senderId === activeChat.reporterId;
+                    const isClaimer = msg.senderId === activeChat.claimerId;
+                    const senderProf = getProfile(msg.senderId);
+                    const nameRoll = `${senderProf?.name || msg.senderId} (${msg.senderId})`;
+
+                    if (isReporter) {
+                      bubbleClass = 'reporter received';
+                      const role = activeChat.itemType === 'found' ? 'Founder' : 'Reporter';
+                      senderLabel = `${role}: ${nameRoll}`;
+                    } else if (isClaimer) {
+                      bubbleClass = 'claimer sent';
+                      const role = activeChat.itemType === 'found' ? 'Claimer' : 'Founder';
+                      senderLabel = `${role}: ${nameRoll}`;
+                    } else {
+                      bubbleClass = 'received'; // fallback if sender is unknown
+                      senderLabel = nameRoll;
+                    }
+                  } else {
+                    // User view: Me vs Other
+                    bubbleClass = msg.senderId === user?.rollNumber ? 'sent' : 'received';
+                  }
+
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`chat-bubble ${bubbleClass}`}
+                    >
+                      {senderLabel && <span className="bubble-sender-label">{senderLabel}</span>}
+                      <div className="bubble-content">
+                        <p>{msg.text}</p>
+                        <span className="bubble-time">{formatTime(msg.timestamp)}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 <div ref={messagesEndRef} />
               </div>
 

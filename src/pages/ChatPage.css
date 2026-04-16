@@ -299,6 +299,20 @@
   max-width: 85%;
 }
 
+.bubble-sender-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chat-bubble.sent .bubble-sender-label {
+  text-align: right;
+}
+
 .bubble-content {
   padding: 0.7rem 1rem;
   border-radius: 1.1rem;
