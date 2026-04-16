@@ -708,3 +708,64 @@ input, textarea, select {
     padding: var(--space-md);
   }
 }
+/* ---- Delete Modal (Used in Admin & Item Cards) ---- */
+.admin-delete-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-delete-modal {
+  padding: 2.5rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.admin-delete-modal .modal-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.admin-delete-modal h3 {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.admin-delete-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.admin-delete-modal .modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.modal-confirm-btn {
+  background: var(--accent-rose) !important;
+  color: white !important;
+  border: 2px solid transparent !important;
+  transition: all 0.25s ease;
+}
+
+.modal-confirm-btn:hover {
+  background: #ffffff !important;
+  color: var(--accent-rose) !important;
+  border-color: var(--accent-rose) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(244, 63, 94, 0.25);
+}
+
+.modal-confirm-btn:hover::before {
+  opacity: 0 !important;
+}
+

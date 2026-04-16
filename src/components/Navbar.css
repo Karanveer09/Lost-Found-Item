@@ -250,6 +250,10 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.mobile-toggle.active .bar {
+  background: var(--primary) !important;
+}
+
 .mobile-toggle.active .bar:nth-child(1) {
   transform: translateY(9.25px) rotate(45deg);
 }
@@ -343,6 +347,16 @@
   .navbar-logo {
     height: 56px;
     width: 56px;
+  }
+
+  /* Hamburger Toggle Color in Small View */
+  .mobile-toggle .bar {
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar.scrolled .mobile-toggle .bar {
+    background: var(--primary);
   }
 }
 
