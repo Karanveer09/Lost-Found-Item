@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const [year, setYear] = useState(profile?.year || '');
   const [hostel, setHostel] = useState(profile?.hostel || '');
   const [roomNumber, setRoomNumber] = useState(profile?.roomNumber || '');
+  const [designation, setDesignation] = useState(profile?.designation || '');
   const [phone, setPhone] = useState(profile?.phone || '');
   const [saved, setSaved] = useState(false);
   const [myStats, setMyStats] = useState({ lost: 0, found: 0, total: 0 });
@@ -34,6 +35,7 @@ const ProfilePage = () => {
       setYear(profile.year || '');
       setHostel(profile.hostel || '');
       setRoomNumber(profile.roomNumber || '');
+      setDesignation(profile.designation || '');
       setPhone(profile.phone || '');
     }
   }, [profile]);
@@ -46,6 +48,7 @@ const ProfilePage = () => {
       hostel,
       roomNumber: roomNumber.trim(),
       phone: phone.trim(),
+      designation: designation.trim(),
     });
     setEditing(false);
     setSaved(true);
@@ -73,11 +76,15 @@ const ProfilePage = () => {
             </h2>
             <span className="profile-roll">{isAdmin ? (profile?.department || 'Director of Operations') : user?.rollNumber}</span>
             <div className="profile-tags">
-              {!isAdmin && (
+              {!isAdmin ? (
                 <>
                   <span className="profile-tag">{profile?.department || 'No Department'}</span>
-                  <span className="profile-tag">{profile?.year || 'No Year'}</span>
+                  <span className={`hostel-badge ${isHosteler ? 'hosteler' : 'day-scholar'}`}>
+                    {isHosteler ? `🏠 ${profile?.hostel}` : '🚌 Day Scholar'}
+                  </span>
                 </>
+              ) : (
+                <span className="profile-tag admin-tag">System Administrator</span>
               )}
             </div>
           </div>
@@ -127,98 +134,122 @@ const ProfilePage = () => {
           )}
 
           <div className="profile-fields">
-            <div className="profile-field">
-              <label className="input-label">Full Name</label>
-              {editing ? (
-                <input type="text" className="input-field" value={name} onChange={(e) => setName(e.target.value)} />
-              ) : (
-                <span className="field-value">{profile?.name || '—'}</span>
-              )}
-            </div>
+            {isAdmin ? (
+              <>
+                <div className="profile-field">
+                  <label className="input-label">Full Name</label>
+                  {editing ? (
+                    <input type="text" className="input-field" value={name} onChange={(e) => setName(e.target.value)} />
+                  ) : (
+                    <span className="field-value">{profile?.name || '—'}</span>
+                  )}
+                </div>
+                <div className="profile-field">
+                  <label className="input-label">Post (Designation)</label>
+                  {editing ? (
+                    <input type="text" className="input-field" value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder="e.g. Director of Operations" />
+                  ) : (
+                    <span className="field-value">{profile?.designation || 'Director of Operations'}</span>
+                  )}
+                </div>
+                <div className="profile-field">
+                  <label className="input-label">Department (Dept)</label>
+                  {editing ? (
+                    <select className="input-field" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                      <option value="">Select</option>
+                      {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  ) : (
+                    <span className="field-value">{profile?.department || 'Administration'}</span>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="profile-field">
+                  <label className="input-label">Full Name</label>
+                  {editing ? (
+                    <input type="text" className="input-field" value={name} onChange={(e) => setName(e.target.value)} />
+                  ) : (
+                    <span className="field-value">{profile?.name || '—'}</span>
+                  )}
+                </div>
 
-            <div className="profile-field">
-              <label className="input-label">Roll Number</label>
-              <span className="field-value">{user?.rollNumber}</span>
-            </div>
+                <div className="profile-field">
+                  <label className="input-label">Roll Number</label>
+                  <span className="field-value">{user?.rollNumber}</span>
+                </div>
 
-            <div className="info-item">
-              <span className="info-label">{isAdmin ? 'Office Location / Base' : 'Hosteler Status'}</span>
-              <span className="info-value">
-                {isAdmin ? (profile?.hostel || 'Main Administrative Block') : (isHosteler ? `Yes - ${profile?.hostel}` : 'Day Scholar')}
-              </span>
-            </div>
+                <div className="profile-field">
+                  <label className="input-label">Department</label>
+                  {editing ? (
+                    <select className="input-field" value={department} onChange={(e) => setDepartment(e.target.value)}>
+                      <option value="">Select</option>
+                      {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  ) : (
+                    <span className="field-value">{profile?.department || '—'}</span>
+                  )}
+                </div>
 
-            <div className="profile-field">
-              <label className="input-label">Department</label>
-              {editing ? (
-                <select className="input-field" value={department} onChange={(e) => setDepartment(e.target.value)}>
-                  <option value="">Select</option>
-                  {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
-                </select>
-              ) : (
-                <span className="field-value">{profile?.department || '—'}</span>
-              )}
-            </div>
+                <div className="profile-field">
+                  <label className="input-label">Year</label>
+                  {editing ? (
+                    <select className="input-field" value={year} onChange={(e) => setYear(e.target.value)}>
+                      <option value="">Select</option>
+                      {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
+                    </select>
+                  ) : (
+                    <span className="field-value">{profile?.year || '—'}</span>
+                  )}
+                </div>
 
-            <div className="profile-field">
-              <label className="input-label">Year</label>
-              {editing ? (
-                <select className="input-field" value={year} onChange={(e) => setYear(e.target.value)}>
-                  <option value="">Select</option>
-                  {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
-                </select>
-              ) : (
-                <span className="field-value">{profile?.year || '—'}</span>
-              )}
-            </div>
+                <div className="profile-field full-width">
+                  <label className="input-label">Hostel Status</label>
+                  <div className={`hostel-status-display ${isHosteler ? 'is-hosteler' : 'is-day-scholar'}`}>
+                    <span className="status-icon">{isHosteler ? '🏠' : '🚌'}</span>
+                    <div className="status-info">
+                      <p className="status-type">{isHosteler ? 'Resident Student (Hosteler)' : 'Non-Resident (Day Scholar)'}</p>
+                      <p className="status-details">
+                        {isHosteler ? `Staying at ${profile?.hostel}${profile?.roomNumber ? ` · Room ${profile.roomNumber}` : ''}` : 'Commuting from outside campus'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-            <div className="profile-field">
-              <label className="input-label">Hostel</label>
-              {editing ? (
-                isAdmin ? (
-                  <input
-                    type="text"
-                    className="input-field"
-                    value={hostel}
-                    onChange={(e) => setHostel(e.target.value)}
-                    placeholder="e.g. Office of the Director"
-                  />
-                ) : (
-                  <select 
-                    className="input-field" 
-                    value={hostel} 
-                    onChange={(e) => setHostel(e.target.value)}
-                  >
-                    <option value="">Select where you stay</option>
-                    {HOSTELS.map((h) => (
-                      <option key={h} value={h}>{h}</option>
-                    ))}
-                  </select>
-                )
-              ) : (
-                <span className="field-value">{profile?.hostel || '—'}</span>
-              )}
-            </div>
-
-            {isHosteler && (
-              <div className="profile-field">
-                <label className="input-label">Room Number</label>
-                {editing ? (
-                  <input type="text" className="input-field" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} />
-                ) : (
-                  <span className="field-value">{profile?.roomNumber || '—'}</span>
+                {editing && (
+                   <div className="profile-field">
+                    <label className="input-label">Update Hostel</label>
+                    <select 
+                      className="input-field" 
+                      value={hostel} 
+                      onChange={(e) => setHostel(e.target.value)}
+                    >
+                      <option value="">Select where you stay</option>
+                      {HOSTELS.map((h) => (
+                        <option key={h} value={h}>{h}</option>
+                      ))}
+                    </select>
+                  </div>
                 )}
-              </div>
-            )}
 
-            <div className="profile-field">
-              <label className="input-label">Phone</label>
-              {editing ? (
-                <input type="tel" className="input-field" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={10} />
-              ) : (
-                <span className="field-value">{profile?.phone || '—'}</span>
-              )}
-            </div>
+                {editing && isHosteler && (
+                  <div className="profile-field">
+                    <label className="input-label">Room Number</label>
+                    <input type="text" className="input-field" value={roomNumber} onChange={(e) => setRoomNumber(e.target.value)} />
+                  </div>
+                )}
+
+                <div className="profile-field">
+                  <label className="input-label">Phone</label>
+                  {editing ? (
+                    <input type="tel" className="input-field" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={10} />
+                  ) : (
+                    <span className="field-value">{profile?.phone || '—'}</span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

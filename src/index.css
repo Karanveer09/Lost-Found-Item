@@ -68,6 +68,13 @@
   --space-xl: 2rem;
   --space-2xl: 3rem;
 
+  @media (max-width: 640px) {
+    --space-md: 0.85rem;
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 2rem;
+  }
+
   /* Border Radius */
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -436,9 +443,16 @@ input, textarea, select {
 
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-2xl);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-xl);
   margin-top: var(--space-lg);
+}
+
+@media (max-width: 480px) {
+  .items-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
 }
 
 .page-header {
@@ -556,11 +570,20 @@ input, textarea, select {
   padding: 4px;
   border-radius: var(--radius-md);
   margin-bottom: var(--space-lg);
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.tabs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .tab {
   flex: 1;
-  padding: 0.6rem 1rem;
+  min-width: fit-content;
+  white-space: nowrap;
+  padding: 0.6rem 1.25rem;
   border-radius: var(--radius-sm);
   font-size: 0.85rem;
   font-weight: 500;

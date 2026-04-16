@@ -105,14 +105,14 @@ const AdminActionsPage = () => {
                     <tr><td colSpan="6" className="text-center">No items found.</td></tr>
                   ) : items.map((item) => (
                     <tr key={item.id}>
-                      <td className="admin-id-col" title={item.id}>{item.id.substring(0,8)}...</td>
-                      <td>
+                      <td data-label="ID" className="admin-id-col" title={item.id}>{item.id.substring(0,8)}...</td>
+                      <td data-label="Type">
                         <span className={`admin-badge admin-badge-${item.type}`}>{item.type}</span>
                       </td>
-                      <td>{item.title}</td>
-                      <td>{item.reportedBy}</td>
-                      <td>{formatDate(item.reportedAt || item.date)}</td>
-                      <td>
+                      <td data-label="Title">{item.title}</td>
+                      <td data-label="Reporter">{item.reportedBy}</td>
+                      <td data-label="Date">{formatDate(item.reportedAt || item.date)}</td>
+                      <td data-label="Actions">
                         <button 
                           className="admin-btn admin-btn-danger"
                           onClick={() => handleDeleteItem(item.id)}
@@ -145,17 +145,17 @@ const AdminActionsPage = () => {
                 <tbody>
                   {usersInfo.map((u) => (
                     <tr key={u.rollNumber}>
-                      <td>{u.rollNumber}</td>
-                      <td>{u.name}</td>
-                      <td>{u.department}</td>
-                      <td>
+                      <td data-label="Roll Number">{u.rollNumber}</td>
+                      <td data-label="Name">{u.name}</td>
+                      <td data-label="Department">{u.department}</td>
+                      <td data-label="Status">
                         {u.isSuspended ? (
                           <span className="admin-badge admin-badge-suspended">Suspended</span>
                         ) : (
                           <span className="admin-badge admin-badge-active">Active</span>
                         )}
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <button 
                           className={`admin-btn ${u.isSuspended ? 'admin-btn-success' : 'admin-btn-warning'}`}
                           onClick={() => handleToggleSuspend(u.rollNumber)}
